@@ -1,3 +1,8 @@
+
+# coding: utf-8
+
+# In[1]:
+
 import scipy
 import pandas as pd
 import numpy as np
@@ -20,6 +25,11 @@ import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 import urllib2
 
+
+# ## Get A BeautifulSoup Object
+
+# In[11]:
+
 def get_search_soup(text):
     url =  ('http://www.bloomberg.com/search?query=' + str(text))
     soup = get_soup(url)
@@ -32,15 +42,17 @@ def get_search_page_links(soup):
     article_list = []
     for item in soup.find_all('h1'):
         try:
+            if 'video' in item.a['href']:
+                #print 'Video Link Skipped: ' + item.a['href']
+                continue
             if 'http' in item.a['href']:
-                print item.a['href']
+                #print item.a['href']
                 article_list.append(item.a['href'])
             else:
-                print 'http://www.bloomberg.com/' + item.a['href']
+                #print 'http://www.bloomberg.com/' + item.a['href']
                 article_list.append('http://www.bloomberg.com/' + item.a['href'])
         except:
             continue
-        print '---'
     return article_list
 def get_text_body(article_url):
     final_text = ""
@@ -49,12 +61,32 @@ def get_text_body(article_url):
     for item in query:
         for text in item.find_all('p'):
             final_text = final_text + '\n\n' + str(text.text.encode('utf-8'))
-    if final_text == '':
-        return 0
     return final_text
+
+
+# In[12]:
 
 soup = get_search_soup('apple')
 
+
+# In[13]:
+
 url_list = get_search_page_links(soup)
-temp = get_text_body(url_list[3])
+temp = get_text_body(url_list[1])
 print temp
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
+
