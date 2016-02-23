@@ -10,7 +10,7 @@ import csv
 import time
 import re
 import matplotlib.pyplot as plt; import matplotlib.pylab as pylab
-%matplotlib inline
+#%matplotlib inline
 pd.options.display.mpl_style = 'default'
 pylab.rcParams['figure.figsize'] = 12, 6
 from dateutil import parser
@@ -49,10 +49,12 @@ def get_text_body(article_url):
     for item in query:
         for text in item.find_all('p'):
             final_text = final_text + '\n\n' + str(text.text.encode('utf-8'))
+    if final_text == '':
+        return 0
     return final_text
 
 soup = get_search_soup('apple')
 
 url_list = get_search_page_links(soup)
-temp = get_text_body(url_list[1])
+temp = get_text_body(url_list[3])
 print temp
